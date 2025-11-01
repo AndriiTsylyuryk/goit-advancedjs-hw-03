@@ -1,52 +1,52 @@
-import './js/pixabay-api';
-import { getImages } from './js/pixabay-api';
-import { imagesRender } from './js/render-functions';
+import "./js/pixabay-api";
+import { getImages } from "./js/pixabay-api";
+import { imagesRender } from "./js/render-functions";
 
-import iziToast from 'izitoast';
+import iziToast from "izitoast";
 
-import 'izitoast/dist/css/iziToast.min.css';
+import "izitoast/dist/css/iziToast.min.css";
 
-const form = document.querySelector('.search');
-const container = document.querySelector('.pictures');
-const loader = document.querySelector('.loader');
-console.log(loader)
+const form = document.querySelector(".form");
+const container = document.querySelector(".gallery");
+const loader = document.querySelector(".loader");
+console.log(loader);
 
-form.addEventListener('submit', handleSubmit);
+form.addEventListener("submit", handleSubmit);
 
 function handleSubmit(event) {
   event.preventDefault();
-  container.innerHTML = '';
+  container.innerHTML = "";
 
   const query = event.target.elements.query.value.trim();
 
   if (!query) {
     iziToast.error({
-      title: 'Error',
+      title: "Error",
       message:
         '"Sorry, there are no images matching your search query. Please try again!"',
-      position: 'topRight',
+      position: "topRight",
     });
     return;
   }
 
-showLoader();
+  showLoader();
 
   getImages(query)
-    .then(data => {
+    .then((data) => {
       if (data) {
         if (data.hits.length === 0) {
           throw Error(
-            'Sorry, there are no images matching your search query. Please try again!'
+            "Sorry, there are no images matching your search query. Please try again!"
           );
         }
         imagesRender(data.hits);
       }
     })
-    .catch(error => {
+    .catch((error) => {
       iziToast.error({
         message:
-          'Sorry, there are no images matching your search query. Please try again!',
-        position: 'topRight',
+          "Sorry, there are no images matching your search query. Please try again!",
+        position: "topRight",
       });
     })
     .finally(() => {
@@ -55,11 +55,10 @@ showLoader();
     });
 }
 
-
 function showLoader() {
-  loader.style.display = 'block';
+  loader.style.display = "block";
 }
 
 function hideLoader() {
-  loader.style.display = 'none';
+  loader.style.display = "none";
 }
